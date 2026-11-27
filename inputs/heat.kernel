@@ -1,0 +1,15 @@
+grid heat input;
+grid output inout;
+grid wind input;
+stage smooth boundary clamp {
+  let here = read(heat, 0, 0);
+  let west = read(heat, -1, 0);
+  let east = read(heat, 1, 0);
+  write output = if valid(here) then (here + west + east) / 3.0 else missing;
+}
+stage stress boundary missing {
+  let speed = read(wind, 0, 0);
+  let value = read(output, 0, 0);
+  write output = if valid(value) then value / speed else missing;
+  reduce thermal_sum = sum(output) from 0.0;
+}

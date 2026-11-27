@@ -1,0 +1,7 @@
+grid input;
+grid output inout;
+stage cuts boundary missing {
+  let scalar = read(input, 0, 0);
+  write output = if scalar == 0.0 then 0.0 else scalar;
+  reduce coherent_sum = sum(output) from 0.0;
+}
